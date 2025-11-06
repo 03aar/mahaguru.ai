@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahaguru AI - Live Chat</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #000; color: #fff;
+        }
+        .screen {
+            display: none; min-height: 100vh; padding: 40px 20px;
+            align-items: center; justify-content: center; flex-direction: column; text-align: center;
+        }
+        .screen.active { display: flex; }
+        h1 { font-size: 2.5rem; margin: 20px 0; }
+        p { color: #888; margin: 10px 0 30px; font-size: 1.1rem; }
+        button {
+            background: #00A870; color: #fff; border: none;
+            padding: 15px 40px; font-size: 1.1rem; border-radius: 8px;
+            cursor: pointer; margin: 10px; font-weight: 600; transition: all 0.3s;
+        }
+        button:hover { background: #008C5E; transform: translateY(-2px); }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        .cards {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 20px; max-width: 500px; width: 100%; margin: 20px 0;
+        }
+        .card {
+            background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1);
+            padding: 30px; border-radius: 12px; cursor: pointer; transition: all 0.3s;
+            display: flex; flex-direction: column; align-items: center; gap: 1rem;
+        }
+        .card:hover {
+            background: rgba(255,255,255,0.1); border-color: #00A870; transform: translateY(-5px);
+        }
+        .emoji { font-size: 3rem; }
+        .chat-container {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px; padding: 20px; margin: 20px 0;
+            max-width: 700px; width: 100%; height: 400px; overflow-y: auto; text-align: left;
+        }
+        .message {
+            margin: 15px 0; padding: 12px 18px; border-radius: 8px;
+            animation: fadeIn 0.3s; max-width: 85%;
+        }
+        .mentor {
+            background: rgba(0,168,112,0.15); border-left: 3px solid #00A870;
+        }
+        .user {
+            background: #00A870; text-align: right; margin-left: auto;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .typing {
+            background: rgba(255,255,255,0.05); padding: 12px 18px;
+            border-radius: 8px; display: inline-block;
+        }
+        .typing span {
+            display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+            background: #00A870; margin: 0 2px; animation: bounce 1.4s infinite;
+        }
+        .typing span:nth-child(2) { animation-delay: 0.2s; }
+        .typing span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes bounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+        .input-area {
+            display: flex; gap: 10px; max-width: 700px; width: 100%; margin-top: 20px;
+        }
+        input {
+            flex: 1; background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.2); color: #fff;
+            padding: 15px; border-radius: 8px; font-size: 1rem; font-family: inherit;
+        }
+        input:focus {
+            outline: none; border-color: #00A870; background: rgba(255,255,255,0.1);
+        }
+        .options {
+            display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px;
+            justify-content: center; max-width: 700px;
+        }
+        .chip {
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2);
+            padding: 10px 20px; border-radius: 20px; cursor: pointer;
+            font-size: 0.9rem; transition: all 0.3s;
+        }
+        .chip:hover {
+            background: rgba(0,168,112,0.3); border-color: #00A870;
+        }
+        .badge {
+            display: inline-block; background: rgba(0,168,112,0.2); color: #00A870;
+            padding: 5px 15px; border-radius: 20px; font-size: 0.85rem;
+            margin: 10px 0; border: 1px solid rgba(0,168,112,0.3);
+        }
+        .api-setup {
+            max-width: 600px; text-align: left; background: rgba(255,255,255,0.03);
+            padding: 30px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .api-setup input { width: 100%; margin: 15px 0; }
+        .api-setup label {
+            display: block; margin: 10px 0 5px; color: #888; font-size: 0.9rem;
+        }
+        .warning {
+            background: rgba(255, 165, 0, 0.1); border: 1px solid rgba(255, 165, 0, 0.3);
+            padding: 15px; border-radius: 8px; margin: 15px 0; font-size: 0.9rem; color: #ffb84d;
+        }
+    </style>
+</head>
+<body>
+
+<div id="screen0" class="screen active">
+    <h1>🌟 Mahaguru AI</h1>
+    <p>Emotion Meets Intelligence</p>
+    <div class="badge">🔒 Secure Setup</div>
+    <div class="api-setup">
+        <h2 style="margin-bottom: 20px;">Live Chat Setup</h2>
+        <p>Paste your OpenAI API key to enable live AI chat:</p>
+        <label>OpenAI API Key:</label>
+        <input type="password" id="apiKeyInput" placeholder="sk-proj-..." value="">
+        <div class="warning">
+            ⚠️ Your API key stays in your browser only. Never saved or shared.
+        </div>
+        <button onclick="setupAPI()">Continue with Live Chat</button>
+        <button onclick="useMockMode()" style="background: rgba(255,255,255,0.1);">Demo Mode (No API)</button>
+        <p style="margin-top: 20px; font-size: 0.85rem; color: #666;">
+            Get API key: <a href="https://platform.openai.com/api-keys" target="_blank" style="color: #00A870;">platform.openai.com</a>
+        </p>
+    </div>
+</div>
+
+<div id="screen1" class="screen">
+    <h1>🌟 Mahaguru AI</h1>
+    <p>Emotion Meets Intelligence</p>
+    <div class="badge" id="modeBadge">✨ Live AI</div>
+    <p>Your personal mentor with AI conversations</p>
+    <button onclick="goTo('screen2')">Get Started</button>
+</div>
+
+<div id="screen2" class="screen">
+    <h1>How do you feel today?</h1>
+    <p>Your honest answer helps us understand you</p>
+    <div class="cards">
+        <div class="card" onclick="selectEmotion('motivated', '🔥')">
+            <div class="emoji">🔥</div><div>Motivated</div>
+        </div>
+        <div class="card" onclick="selectEmotion('lost', '🌫️')">
+            <div class="emoji">🌫️</div><div>Lost</div>
+        </div>
+        <div class="card" onclick="selectEmotion('stressed', '😰')">
+            <div class="emoji">😰</div><div>Stressed</div>
+        </div>
+        <div class="card" onclick="selectEmotion('calm', '😌')">
+            <div class="emoji">😌</div><div>Calm</div>
+        </div>
+    </div>
+</div>
+
+<div id="screen3" class="screen">
+    <h1>Your Mahaguru Mentor <span id="emotionBadge"></span></h1>
+    <div class="badge" id="chatModeBadge">🤖 GPT-4</div>
+    <div class="chat-container" id="chatBox"></div>
+    <div class="input-area">
+        <input type="text" id="userInput" placeholder="Type your message..." onkeypress="if(event.key==='Enter') sendUserMessage()">
+        <button onclick="sendUserMessage()" id="sendBtn">Send</button>
+    </div>
+    <div class="options" id="quickOptions"></div>
+</div>
+
+<script>
+let OPENAI_API_KEY = '';
+let useLiveMode = false;
+let conversationHistory = [];
+let userEmotion = '';
+
+const systemPrompt = 'You are Mahaguru AI, an emotionally intelligent mentor for students. Tone: Calm, encouraging. Length: 1-3 sentences max. Never judge, always support.';
+
+const mockResponses = {
+    'focus': 'Focus is a skill we build together. What time of day do you feel most alert?',
+    'overwhelmed': 'Let\'s break things down. What\'s the one thing that matters most?',
+    'motivation': 'What gave you energy when you last felt motivated?',
+    'career': 'What activities make you lose track of time?',
+    'default': 'Tell me more. I\'m here to listen.'
+};
+
+function setupAPI() {
+    const key = document.getElementById('apiKeyInput').value.trim();
+    if (!key || !key.startsWith('sk-')) {
+        alert('Please enter a valid OpenAI API key');
+        return;
+    }
+    OPENAI_API_KEY = key;
+    useLiveMode = true;
+    goTo('screen1');
+}
+
+function useMockMode() {
+    useLiveMode = false;
+    document.getElementById('modeBadge').textContent = '📝 Demo Mode';
+    document.getElementById('chatModeBadge').textContent = '📝 Demo';
+    goTo('screen1');
+}
+
+function goTo(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
+
+function selectEmotion(emotion, emoji) {
+    userEmotion = emotion;
+    document.getElementById('emotionBadge').textContent = emoji;
+    conversationHistory = [
+        { role: 'system', content: systemPrompt },
+        { role: 'system', content: `Student is feeling: ${emotion}` }
+    ];
+    goTo('screen3');
+    showTyping();
+    if (useLiveMode) {
+        callOpenAI(`I'm feeling ${emotion} today`);
+    } else {
+        setTimeout(() => {
+            const greetings = {
+                'motivated': 'Great energy! Let\'s channel that into action.',
+                'lost': 'It\'s okay. Clarity comes one step at a time.',
+                'stressed': 'I understand. Let\'s break things down together.',
+                'calm': 'Wonderful. Perfect for growth.'
+            };
+            addMessage('mentor', greetings[emotion]);
+        }, 800);
+    }
+    updateQuickOptions();
+}
+
+function showTyping() {
+    const box = document.getElementById('chatBox');
+    const typing = document.createElement('div');
+    typing.className = 'typing';
+    typing.id = 'typingIndicator';
+    typing.innerHTML = '<span></span><span></span><span></span>';
+    box.appendChild(typing);
+    box.scrollTop = box.scrollHeight;
+}
+
+function hideTyping() {
+    const t = document.getElementById('typingIndicator');
+    if (t) t.remove();
+}
+
+function addMessage(type, text) {
+    hideTyping();
+    const box = document.getElementById('chatBox');
+    const msg = document.createElement('div');
+    msg.className = 'message ' + type;
+    msg.textContent = text;
+    box.appendChild(msg);
+    box.scrollTop = box.scrollHeight;
+}
+
+function sendUserMessage() {
+    const input = document.getElementById('userInput');
+    const message = input.value.trim();
+    if (!message) return;
+    addMessage('user', message);
+    input.value = '';
+    showTyping();
+    if (useLiveMode) {
+        callOpenAI(message);
+    } else {
+        setTimeout(() => {
+            addMessage('mentor', getMockResponse(message));
+        }, 700);
+    }
+}
+
+function quickChat(msg) {
+    addMessage('user', msg);
+    showTyping();
+    if (useLiveMode) callOpenAI(msg);
+    else setTimeout(() => addMessage('mentor', getMockResponse(msg)), 700);
+}
+
+function getMockResponse(msg) {
+    const lower = msg.toLowerCase();
+    for (let key in mockResponses) {
+        if (lower.includes(key)) return mockResponses[key];
+    }
+    return mockResponses.default;
+}
+
+async function callOpenAI(userMessage) {
+    const btn = document.getElementById('sendBtn');
+    const input = document.getElementById('userInput');
+    btn.disabled = true;
+    input.disabled = true;
+
+    conversationHistory.push({ role: 'user', content: userMessage });
+
+    try {
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${OPENAI_API_KEY}`
+            },
+            body: JSON.stringify({
+                model: 'gpt-4',
+                messages: conversationHistory,
+                max_tokens: 150,
+                temperature: 0.7
+            })
+        });
+
+        if (!response.ok) throw new Error('API Error');
+
+        const data = await response.json();
+        const aiResponse = data.choices[0].message.content;
+
+        conversationHistory.push({ role: 'assistant', content: aiResponse });
+        addMessage('mentor', aiResponse);
+        updateQuickOptions();
+
+    } catch (error) {
+        hideTyping();
+        addMessage('mentor', 'Sorry, I had trouble connecting. Please try again.');
+    } finally {
+        btn.disabled = false;
+        input.disabled = false;
+        input.focus();
+    }
+}
+
+function updateQuickOptions() {
+    const opts = ['Help me focus', 'I feel overwhelmed', 'Need motivation', 'Career guidance', 'Study tips', 'Dealing with stress'];
+    const selected = opts.sort(() => 0.5 - Math.random()).slice(0, 4);
+    document.getElementById('quickOptions').innerHTML = selected.map(o =>
+        `<div class="chip" onclick="quickChat('${o}')">${o}</div>`
+    ).join('');
+}
+
+console.log('✓ Mahaguru AI Ready');
+</script>
+
+</body>
+</html>
