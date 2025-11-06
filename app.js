@@ -62,10 +62,10 @@ const contextualOptions = {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Mahaguru AI - Emotion Meets Intelligence');
 
-    // Show splash screen, then welcome screen
+    // Show splash screen, then welcome screen (faster timing)
     setTimeout(() => {
         showScreen('welcome-screen');
-    }, 2500);
+    }, 1200);
 
     // Initialize energy slider
     const energySlider = document.getElementById('energy-slider');
@@ -142,7 +142,7 @@ function selectOption(category, value) {
     if (nextScreen) {
         setTimeout(() => {
             showScreen(nextScreen);
-        }, 300);
+        }, 150);
     }
 }
 
@@ -207,12 +207,12 @@ function sendMessage(message) {
         content: message
     });
 
-    // Simulate typing delay
+    // Simulate typing delay (faster response)
     setTimeout(() => {
         const response = getAIResponse(message);
         addMentorMessage(response);
         updateChatOptions(message);
-    }, 1000);
+    }, 600);
 }
 
 function addMentorMessage(message) {

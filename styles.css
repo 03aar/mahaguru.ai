@@ -19,7 +19,7 @@
     --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
     /* Transitions */
-    --transition-main: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-main: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* === RESET & BASE === */
@@ -69,12 +69,12 @@ body {
 
 .splash-content {
     text-align: center;
-    animation: fadeInUp 1s ease-out;
+    animation: fadeInUp 0.5s ease-out;
 }
 
 .logo-container {
     margin-bottom: 2rem;
-    animation: logoGlow 2s ease-in-out infinite;
+    animation: logoGlow 1.2s ease-in-out infinite;
 }
 
 .logo {
@@ -120,7 +120,7 @@ body {
     width: 90%;
     margin: 0 auto;
     padding: 2rem;
-    animation: fadeInUp 0.6s ease-out;
+    animation: fadeInUp 0.4s ease-out;
 }
 
 .logo-small {
@@ -161,7 +161,7 @@ h1 {
 .progress-fill {
     height: 100%;
     background: var(--color-emerald);
-    transition: width 0.6s ease-out;
+    transition: width 0.4s ease-out;
 }
 
 /* === BUTTONS === */
@@ -344,7 +344,7 @@ input[type="checkbox"] {
 }
 
 .pulse-animation {
-    animation: gentlePulse 2s ease-in-out infinite;
+    animation: gentlePulse 1.5s ease-in-out infinite;
 }
 
 @keyframes gentlePulse {
@@ -515,13 +515,13 @@ input[type="checkbox"] {
 
 .chat-message {
     margin-bottom: 1.5rem;
-    animation: slideIn 0.3s ease-out;
+    animation: slideIn 0.2s ease-out;
 }
 
 @keyframes slideIn {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(15px);
     }
     to {
         opacity: 1;
@@ -638,7 +638,7 @@ input[type="checkbox"] {
     background: var(--color-emerald);
     border-radius: 4px 4px 0 0;
     min-height: 20px;
-    transition: height 0.5s ease;
+    transition: height 0.3s ease;
 }
 
 .challenge-list {
