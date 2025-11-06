@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahaguru AI - Emotion Meets Intelligence</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Screen 1: Splash Screen -->
+    <div id="splash-screen" class="screen active">
+        <div class="splash-content">
+            <div class="logo-container">
+                <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20,80 L20,20 L35,35 L50,20 L65,35 L80,20 L80,80" stroke="white" stroke-width="3" fill="none"/>
+                    <circle cx="50" cy="50" r="25" stroke="white" stroke-width="2" fill="none" opacity="0.3"/>
+                </svg>
+            </div>
+            <h1 class="brand-name">Mahaguru AI</h1>
+            <p class="tagline">Emotion Meets Intelligence</p>
+        </div>
+    </div>
+
+    <!-- Screen 2: Welcome Screen -->
+    <div id="welcome-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="logo-small">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20,80 L20,20 L35,35 L50,20 L65,35 L80,20 L80,80" stroke="white" stroke-width="3" fill="none"/>
+                </svg>
+            </div>
+            <h1>Welcome to Mahaguru AI</h1>
+            <p class="subtitle">Your personal mentor for clarity, confidence & calm</p>
+            <div class="button-group">
+                <button class="btn-primary" onclick="showScreen('signup-screen')">Get Started</button>
+                <button class="btn-secondary" onclick="showScreen('about-screen')">Learn More</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 2.5: About Screen -->
+    <div id="about-screen" class="screen">
+        <div class="content-wrapper">
+            <button class="btn-back" onclick="showScreen('welcome-screen')">← Back</button>
+            <h1>About Mahaguru AI</h1>
+            <div class="about-content">
+                <p>Mahaguru AI is an emotionally intelligent mentorship platform designed for students aged 16 to 25.</p>
+                <ul class="feature-list">
+                    <li>Understands your emotions and learning patterns</li>
+                    <li>Provides personalized guidance and support</li>
+                    <li>Helps reduce stress and improve focus</li>
+                    <li>Tracks your emotional well-being journey</li>
+                </ul>
+                <p class="mission">Our mission: Revive the Gurukul spirit of mentorship using modern AI — blending empathy, clarity, and purpose.</p>
+            </div>
+            <button class="btn-primary" onclick="showScreen('signup-screen')">Get Started</button>
+        </div>
+    </div>
+
+    <!-- Screen 3: Account Setup -->
+    <div id="signup-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 15%"></div>
+            </div>
+            <h1>Create Your Account</h1>
+            <form class="signup-form" onsubmit="handleSignup(event)">
+                <div class="form-tabs">
+                    <button type="button" class="tab active">Sign Up</button>
+                    <button type="button" class="tab">Login</button>
+                    <button type="button" class="tab" onclick="skipToOnboarding()">Guest</button>
+                </div>
+                <input type="text" id="name" placeholder="Your Name" required>
+                <input type="email" id="email" placeholder="Email Address" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <select id="role" required>
+                    <option value="">Select Your Role</option>
+                    <option value="student">Student</option>
+                    <option value="teacher">Teacher</option>
+                    <option value="parent">Parent</option>
+                </select>
+                <label class="checkbox-label">
+                    <input type="checkbox" required>
+                    <span>I agree to Mahaguru's Ethical AI Policy</span>
+                </label>
+                <button type="submit" class="btn-primary">Continue →</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Screen 4: Emotional Check-in -->
+    <div id="emotion-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 30%"></div>
+            </div>
+            <h1>How do you feel today?</h1>
+            <p class="subtitle">Your honest answer helps us understand you better</p>
+            <div class="option-cards">
+                <div class="option-card pulse-animation" onclick="selectOption('emotion', 'motivated')">
+                    <span class="emoji">🔥</span>
+                    <span class="label">Motivated</span>
+                </div>
+                <div class="option-card pulse-animation" onclick="selectOption('emotion', 'lost')">
+                    <span class="emoji">🌫️</span>
+                    <span class="label">Lost</span>
+                </div>
+                <div class="option-card pulse-animation" onclick="selectOption('emotion', 'stressed')">
+                    <span class="emoji">😰</span>
+                    <span class="label">Stressed</span>
+                </div>
+                <div class="option-card pulse-animation" onclick="selectOption('emotion', 'calm')">
+                    <span class="emoji">😌</span>
+                    <span class="label">Calm</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 5: Purpose Finder -->
+    <div id="purpose-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 45%"></div>
+            </div>
+            <h1>What is your main goal right now?</h1>
+            <p class="subtitle">We'll help you stay focused on what matters most</p>
+            <div class="option-cards">
+                <div class="option-card" onclick="selectOption('purpose', 'exams')">
+                    <span class="emoji">📚</span>
+                    <span class="label">Study for exams</span>
+                </div>
+                <div class="option-card" onclick="selectOption('purpose', 'career')">
+                    <span class="emoji">🎯</span>
+                    <span class="label">Find career direction</span>
+                </div>
+                <div class="option-card" onclick="selectOption('purpose', 'growth')">
+                    <span class="emoji">🌱</span>
+                    <span class="label">Improve myself</span>
+                </div>
+                <div class="option-card" onclick="selectOption('purpose', 'consistency')">
+                    <span class="emoji">⚡</span>
+                    <span class="label">Stay consistent</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 6: Learning Style -->
+    <div id="learning-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 60%"></div>
+            </div>
+            <h1>How do you learn best?</h1>
+            <p class="subtitle">Everyone has their own way of understanding</p>
+            <div class="option-cards">
+                <div class="option-card" onclick="selectOption('learning', 'visual')">
+                    <span class="emoji">👁️</span>
+                    <span class="label">Visual</span>
+                </div>
+                <div class="option-card" onclick="selectOption('learning', 'auditory')">
+                    <span class="emoji">👂</span>
+                    <span class="label">Auditory</span>
+                </div>
+                <div class="option-card" onclick="selectOption('learning', 'practice')">
+                    <span class="emoji">✍️</span>
+                    <span class="label">Practice-based</span>
+                </div>
+                <div class="option-card" onclick="selectOption('learning', 'group')">
+                    <span class="emoji">👥</span>
+                    <span class="label">Group projects</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 7: Motivation Barrier -->
+    <div id="barrier-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 75%"></div>
+            </div>
+            <h1>What holds you back most?</h1>
+            <p class="subtitle">Understanding your challenges is the first step</p>
+            <div class="option-cards">
+                <div class="option-card" onclick="selectOption('barrier', 'distraction')">
+                    <span class="emoji">📱</span>
+                    <span class="label">Distraction</span>
+                </div>
+                <div class="option-card" onclick="selectOption('barrier', 'overthinking')">
+                    <span class="emoji">🤔</span>
+                    <span class="label">Overthinking</span>
+                </div>
+                <div class="option-card" onclick="selectOption('barrier', 'clarity')">
+                    <span class="emoji">❓</span>
+                    <span class="label">Lack of clarity</span>
+                </div>
+                <div class="option-card" onclick="selectOption('barrier', 'energy')">
+                    <span class="emoji">🔋</span>
+                    <span class="label">Low energy</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 8: Energy Level -->
+    <div id="energy-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 90%"></div>
+            </div>
+            <h1>Rate your energy today</h1>
+            <p class="subtitle">This helps us understand your current state</p>
+            <div class="slider-container">
+                <div class="energy-value" id="energy-value">5</div>
+                <input type="range" id="energy-slider" min="1" max="10" value="5" class="energy-slider">
+                <div class="slider-labels">
+                    <span>Low</span>
+                    <span>High</span>
+                </div>
+            </div>
+            <button class="btn-primary" onclick="selectOption('energy', document.getElementById('energy-slider').value)">Continue →</button>
+        </div>
+    </div>
+
+    <!-- Screen 9: Personalized Intro -->
+    <div id="intro-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 100%"></div>
+            </div>
+            <div class="intro-content">
+                <div class="logo-small">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20,80 L20,20 L35,35 L50,20 L65,35 L80,20 L80,80" stroke="white" stroke-width="3" fill="none"/>
+                    </svg>
+                </div>
+                <h1>Hi <span id="user-name">there</span>,<br>I'm your Mahaguru Mentor</h1>
+                <div class="emotion-summary" id="emotion-summary">
+                    <!-- Dynamic summary will be inserted here -->
+                </div>
+                <button class="btn-primary" onclick="showScreen('chat-screen')">Start My Journey →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App: Chat View -->
+    <div id="chat-screen" class="screen">
+        <div class="app-header">
+            <div class="header-left">
+                <svg class="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20,80 L20,20 L35,35 L50,20 L65,35 L80,20 L80,80" stroke="white" stroke-width="3" fill="none"/>
+                </svg>
+                <span>Mahaguru AI</span>
+            </div>
+            <div class="header-right">
+                <button class="icon-btn" onclick="showScreen('insights-screen')" title="Mood Pulse">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                </button>
+                <button class="icon-btn" onclick="toggleMenu()" title="Menu">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"/>
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <line x1="3" y1="18" x2="21" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="chat-container" id="chat-container">
+            <div class="chat-message mentor-message">
+                <div class="message-bubble">
+                    Hello! I'm here to support you on your journey. What's on your mind today?
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-options" id="chat-options">
+            <button class="option-chip" onclick="sendMessage('I need help with focus')">Help with focus</button>
+            <button class="option-chip" onclick="sendMessage('Feeling overwhelmed')">Feeling overwhelmed</button>
+            <button class="option-chip" onclick="sendMessage('Need motivation')">Need motivation</button>
+            <button class="option-chip" onclick="sendMessage('Career guidance')">Career guidance</button>
+        </div>
+    </div>
+
+    <!-- Insights Screen -->
+    <div id="insights-screen" class="screen">
+        <div class="app-header">
+            <button class="btn-back" onclick="showScreen('chat-screen')">← Back</button>
+            <h2>Mood Pulse</h2>
+        </div>
+        <div class="content-wrapper insights-content">
+            <div class="mood-gauge">
+                <svg viewBox="0 0 200 120" class="gauge-svg">
+                    <path d="M 20 100 A 80 80 0 0 1 180 100" stroke="#333" stroke-width="20" fill="none"/>
+                    <path d="M 20 100 A 80 80 0 0 1 120 40" stroke="#00A870" stroke-width="20" fill="none" class="gauge-fill"/>
+                </svg>
+                <div class="gauge-label">Today's Mood</div>
+                <div class="gauge-value">Balanced</div>
+            </div>
+
+            <div class="insight-card">
+                <h3>Focus Trend (7 days)</h3>
+                <div class="trend-chart">
+                    <div class="bar" style="height: 60%"></div>
+                    <div class="bar" style="height: 70%"></div>
+                    <div class="bar" style="height: 65%"></div>
+                    <div class="bar" style="height: 80%"></div>
+                    <div class="bar" style="height: 75%"></div>
+                    <div class="bar" style="height: 85%"></div>
+                    <div class="bar" style="height: 90%"></div>
+                </div>
+            </div>
+
+            <div class="insight-card">
+                <h3>Top 3 Challenges</h3>
+                <ul class="challenge-list">
+                    <li>Managing distractions</li>
+                    <li>Maintaining consistency</li>
+                    <li>Dealing with stress</li>
+                </ul>
+            </div>
+
+            <button class="btn-primary" onclick="showReflection()">Reflect Now</button>
+        </div>
+    </div>
+
+    <!-- Side Menu -->
+    <div id="side-menu" class="side-menu">
+        <div class="menu-header">
+            <h2>Menu</h2>
+            <button class="btn-close" onclick="toggleMenu()">✕</button>
+        </div>
+        <nav class="menu-nav">
+            <a href="#" onclick="showScreen('chat-screen'); toggleMenu();">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                Chat with Mentor
+            </a>
+            <a href="#" onclick="showScreen('insights-screen'); toggleMenu();">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                </svg>
+                Mood Pulse
+            </a>
+            <a href="#" onclick="alert('Growth Journal feature coming soon!'); toggleMenu();">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                </svg>
+                Growth Journal
+            </a>
+            <a href="#" onclick="alert('Goals feature coming soon!'); toggleMenu();">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 6v6l4 2"/>
+                </svg>
+                My Goals
+            </a>
+            <a href="#" onclick="alert('Settings feature coming soon!'); toggleMenu();">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M12 1v6m0 6v6"/>
+                    <path d="M1 12h6m6 0h6"/>
+                </svg>
+                Settings
+            </a>
+        </nav>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

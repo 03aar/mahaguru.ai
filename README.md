@@ -2,6 +2,12 @@
 
 **Emotion Meets Intelligence**
 
+## 🌐 Interactive Demo
+
+**[Try the Live Prototype →](https://htmlpreview.github.io/?https://github.com/03aar/mahaguru.ai/blob/claude/mahaguru-ai-setup-011CUrY7JDmCe6AThXg19TMH/index.html)**
+
+Experience the complete user journey from onboarding to AI mentor chat. See [DEMO.md](DEMO.md) for details.
+
 ## Overview
 
 Mahaguru AI is an emotionally intelligent mentorship platform for students aged 16 to 25. It bridges the gap between academic pressure and mental well-being by providing:
